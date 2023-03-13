@@ -1,6 +1,7 @@
 const express = require("express");
 const { Cart, User, Product } = require("../models");
 const nodemailer = require("nodemailer")
+const smtpTransport = require('nodemailer-smtp-transport');
 
 const router = express.Router();
 
@@ -159,54 +160,78 @@ router.post("/:userId/edit/:productId", (req, res, next) => {
 
 // IGNORAR =>
 
-/* router.post("/:userId/checkout", (req, res, next) => {
+router.post("/:userId/checkout", async(req, res, next) => {
   const userId = req.params.userId;
-  Cart.findOne({ where: { userId, state: true } }).then((cart) => {
+   const cart = await Cart.findOne({ where: { userId, state: true } })
     const totalCart = cart.dataValues.products
-    console.log(totalCart)
+    console.log("CONSOLE LOG ", totalCart)
 
-    let transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false,
+    const list = totalCart.map((item) => item.productId)
+    const AmountOfProduct = totalCart.map((item) => item.quantity)
+
+    const ListOfProduts = await list.map((item) => Product.findByPk(item) )
+
+   console.log("I HOPE YOU ARE FULL ", ListOfProduts)
+
+    console.log("CONSOLE LOG DE LISTA", list)
+
+    console.log("CONSOLE LOG DE AmountOfProduct", AmountOfProduct)
+
+   
+
+
+
+    cart.state = false
+  /*   console.log("CONSOLE LOG DE CART, TENDRIA QUE SER FALSE -->", cart) */
+
+  const newCart = await Cart.create({ userId: req.params.userId, state: true })
+     
+      res.status(201).send(cart)
+
+     let transport = nodemailer.createTransport(smtpTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
       auth: {
-        user: "Klimty Ecommerce",
-        pass: "Klimty1234",
+        user: "klimtyecommerce@gmail.com",
+        pass: "auaboiqezvqpvulg",
       },
-    });
+    })); 
 
     User.findByPk(userId).then((user) => {
-const {name, lastName, email} = user
+      const { name, lastName, email } = user
 
-      const message = {
+/*       
+  const address2 = localStorage.getItem("address2");
+  const name = localStorage.getItem("name");
+  const lastName = localStorage.getItem("lastName");
+  const address1 = localStorage.getItem("address1");
+ */
+      
+       const message = {
         from: "klimtyecommerce@gmail.com",
         to: email,
         subject: `Your purchased all the items on your cart.`,
         text: "Don't really have much to say",
+        html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer'
       };
-      transporter.sendMail(message, function (err, data) {
+      transport.sendMail(message, (err, data) => {
         if (err) {
-           next(err)
+           console.log(err)
         } else {
-          res.status(200).send(data);
+          console.log("Message sent: ", data.messageId)
         }
-        })
-      });
-    })
+        }) 
+      }); 
+    
 
-
-   
+/* 
+    localStorage.removeItem("address2");
+    localStorage.removeItem("name");
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("address1"); */
+  
 });
 
-router.get("/:userId/buyOrden", (req, res) => {
-  const id = req.params.userId
-  BuyOrden.findAll({
-    where: {
-    userId: id
-    }
-  }).then((userBuyOrden) => {
-    res.status(200).send(userBuyOrden)
-  })
-}); */
+
 
 module.exports = router;
