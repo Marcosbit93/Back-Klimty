@@ -232,6 +232,15 @@ router.post("/:userId/checkout", async(req, res, next) => {
   
 });
 
+router.get("/:userId/historial", (req, res, next) => {
+  const userId = req.params.userId
+  Cart.findAll({ where: { userId, state: false } }).then((pastCarts) => {
+    const carts = pastCarts
+    const exProducts = pastCarts.map((item) => item.products)
+    res.status(200).send(exProducts)
+  })
+})
+
 
 
 module.exports = router;

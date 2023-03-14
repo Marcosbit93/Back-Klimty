@@ -4,6 +4,11 @@ const router = express.Router();
 
 // GET PARA TRAER TODOS LOS USUARIOS
 
+router.get("/", (req, res) => {
+    User.findAll().then((users) => res.status(200).send(users))
+})
+
+
 router.get("/:userId/all", (req, res) => {
     const userId = req.params.userId
     User.findByPk(userId).then((user) => {
