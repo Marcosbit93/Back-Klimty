@@ -6,11 +6,11 @@ User.init(
   {
     name: {
       type: S.STRING,
-      allowNull: false,
+      /* allowNull: false, */
     },
     lastName: {
       type: S.STRING,
-      allowNull: false,
+   /*    allowNull: false, */
     },
     fullName: {
       type: S.VIRTUAL,
@@ -30,7 +30,7 @@ User.init(
     },
     email: {
       type: S.STRING,
-      allowNull: false,
+     /*  allowNull: false, */
       unique: true,
       validate: {
         isEmail: true,

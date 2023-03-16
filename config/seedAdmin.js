@@ -1,9 +1,10 @@
 const seedAdmin = {
   name: "admin",
   lastName: "admin",
-  email: "jlema1990@gmail.com",
+  email: "inchauspenico@gmail.com",
   isAdmin: true,
-  uid: "xKTy7Cs1JVQvDQVTgq9Omte4QAA3",
+  uid: "cInSrYKl4OXbsTDqvvnLy6B9HJH3",
 };
 
 module.exports = seedAdmin;
+
