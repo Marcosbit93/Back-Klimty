@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
-const {DB_NAME, PORT, PASS, HOST} = require('../config/_envs')
+const {name, host} = require('../config/index')
 
-const db = new Sequelize(DB_NAME, null, null, {
-    host: HOST,
+const db = new Sequelize(name, null, null, {
+    host: host,
     logging: false,
     dialect: 'postgres'
 })
