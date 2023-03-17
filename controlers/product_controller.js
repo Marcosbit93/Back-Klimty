@@ -81,19 +81,27 @@ exports.admin_by_product_id_delete = async (req, res, next) => {
 }
 
 exports.admin_add_post = async (req, res, next) => {
-    try {
-        const { name, price, description, category, photo_url } = req.body;
-        const AdminUser = await User.findByPk(req.params.userId)
-        if (AdminUser.isAdmin === true) {
-          const newProduct = await Product.create({name, price, description,category, photo_url})
-          return res.status(201).send(newProduct) 
-        } else {
-          return res.status(401).send({error:"Your account is not admin"})
-        }
-      } catch (err) {
-        return next(err)
-      }
-}
+  try {
+    const { name, price, description, category, photo_url, artistId } =
+      req.body;
+    const AdminUser = await User.findByPk(req.params.userId);
+    if (AdminUser.isAdmin === true) {
+      const newProduct = await Product.create({
+        name,
+        price,
+        description,
+        category,
+        photo_url,
+        artistId,
+      });
+      return res.status(201).send(newProduct);
+    } else {
+      return res.status(401).send({ error: "Your account is not admin" });
+    }
+  } catch (err) {
+    return next(err);
+  }
+};
 
 exports.admin_edit_product_put = async (req, res, next) => {
     try {
