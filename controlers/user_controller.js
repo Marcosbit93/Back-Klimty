@@ -91,6 +91,16 @@ exports.user_create_post = async (req, res) => {
       }
 }
 
+exports.admin_create_new_user = async (req, res) => {
+  try {
+      const { name, lastName, email } = req.body;
+      const NewUser = await User.findOrCreate({ where: { name, lastName, email} })
+      return res.status(201).send(NewUser)
+    } catch (err) {
+      return next(err)
+    }
+}
+
 exports.user_edit_put = async (req, res) => {
     try {
         const { name, lastName, uid, isAdmin } = req.body;

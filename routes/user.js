@@ -28,6 +28,10 @@ router.get(`/:id`, user_controler.user_find_by_id_get);
 
 router.post("/", user_controler.user_create_post);
 
+// POST PARA CREAR EL USUARIO DESDE PANEL DE ADMIN
+
+router.post("/:id/add", user_controler.admin_create_new_user);
+
 // PUT PARA EDITAR EL USUARIO
 
 router.put(`/edit/:id`, user_controler.user_edit_put);

@@ -106,9 +106,8 @@ exports.admin_add_post = async (req, res, next) => {
 };
 
 exports.admin_edit_product_put = async (req, res, next) => {
-  console.log("QUE LLEGA AL BACK", req.body.updatedItem);
   try {
-    const { name, price, description, category } = req.body.updatedItem;
+    const { name, price, description, category } = req.body;
     const AdminUser = await User.findByPk(req.params.userId);
     if (AdminUser.isAdmin === true) {
       const productToEdit = await Product.findByPk(req.params.productId);
