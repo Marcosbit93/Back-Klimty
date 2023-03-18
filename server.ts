@@ -1,11 +1,12 @@
-const express = require("express");
-const { port } = require("./config/index");
-const app = express();
-const db = require("./db");
-const morgan = require("morgan");
-const cors = require("cors");
-const { Artist, Product, Cart, User, Checkout } = require("./models");
-const routes = require("./routes");
+import express, { Application, Request, Response, NextFunction } from "express"
+import config from "./config/index"
+import db from "./db/index"
+import morgan from "morgan";
+import cors from "cors"
+/* import routes from "./routes" */
+
+const app: Application = express();
+const port = config.port;
 
 var corsOptions = {
   origin: 'http://localhost:3000',
@@ -17,10 +18,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Express Routing
-app.use("/api", routes);
+/* app.use("/api", routes); */
 
 // ERROR MIDDLEWARE
-app.use(function (err, req, res, next) {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err, err.stack);
   res.status(500).send(err);
 });
@@ -29,4 +30,4 @@ db.sync({ force: false }).then(() => {
   app.listen(port, () => console.log(`SERVER ON PORT: ${port}`));
 });
 
-module.exports = app;
+export default app;
